@@ -390,6 +390,25 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 460; }
 .craft-head h2 { font-size: var(--sc-t-3xl); line-height: 1.02; margin: 0 0 var(--sc-4); }
 .craft-head p { color: var(--sc-ink-soft); max-width: 54ch; }
 
+/* real-figures strip: not boxed cards, just numbers on space with hairlines */
+.stats {
+  margin-top: var(--sc-8); display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; border-block: 1px solid var(--sc-hairline);
+}
+.stat { padding: var(--sc-5) var(--sc-5) var(--sc-5) 0; }
+.stat + .stat { border-left: 1px solid var(--sc-hairline); padding-left: var(--sc-5); }
+.stat__n {
+  display: block; font-family: var(--sc-font-display); font-weight: 460;
+  font-size: var(--sc-t-2xl); line-height: 1; color: var(--sc-ink);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.stat__l { display: block; margin-top: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); text-wrap: pretty; }
+@media (max-width: 780px) { .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--sc-hairline); } }
+@media (max-width: 420px) { .stats { grid-template-columns: 1fr; }
+  .stat + .stat { border-left: 0; padding-left: 0; border-top: 1px solid var(--sc-hairline); } }
+
 /* spec rows — museum labels, not marketing. Fact, then the fact's value. */
 .specs { margin-top: var(--sc-8); display: grid; gap: 0; border-top: 1px solid var(--sc-hairline); }
 .spec {

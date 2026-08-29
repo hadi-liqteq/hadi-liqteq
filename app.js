@@ -20,9 +20,13 @@
   /* --- where a completed enquiry goes. The client sets these to go live; until
         then the form composes the message and opens a mail draft on their own
         domain. Nothing is invented and nothing is sent silently. -------------- */
+  // The catalogue prints no phone or email, only the website, so nothing is
+  // invented here. Fill these with the real inbox / WhatsApp number to go live;
+  // until then the form confirms on-page and points to the website + socials.
   var CONTACT = {
-    email: 'enquiries@coartslighting.com',   // placeholder on Coarts' own domain
-    whatsapp: ''                              // e.g. '923001234567' — leave '' to hide
+    email: '',        // e.g. 'sales@coartslighting.com'
+    whatsapp: '',     // e.g. '923001234567' (digits only, with country code)
+    website: 'https://www.coartslighting.com'
   };
 
   /* ======================================================== 1 · the dimmer == */
@@ -90,7 +94,7 @@
     }
     if (!listEl) return;
     if (!items.length) {
-      listEl.innerHTML = '<p class="drawer__empty">No pieces yet. Tap <b>Enquire</b> on anything in the range and it lands here.</p>';
+      listEl.innerHTML = '<p class="drawer__empty">No products yet. Tap <b>Enquire</b> on anything in the range and it lands here.</p>';
       return;
     }
     listEl.innerHTML = items.map(function (it, i) {
@@ -157,7 +161,7 @@
       var contact = (data.get('contact') || '').toString().trim();
       var note = (data.get('note') || '').toString().trim();
       var lines = ['Enquiry from ' + (name || 'a visitor') + ' (' + (contact || 'no contact given') + ')', ''];
-      if (items.length) { lines.push('Pieces:'); items.forEach(function (it) { lines.push('  • ' + it.name + ' — ' + it.meta); }); lines.push(''); }
+      if (items.length) { lines.push('Pieces:'); items.forEach(function (it) { lines.push('  • ' + it.name + ' · ' + it.meta); }); lines.push(''); }
       else { lines.push('Pieces: (none selected yet)', ''); }
       if (note) lines.push('Note: ' + note);
       var body = lines.join('\n');
@@ -167,13 +171,13 @@
         window.open('https://wa.me/' + CONTACT.whatsapp + '?text=' + encodeURIComponent(body), '_blank', 'noopener');
         opened = true;
       } else if (CONTACT.email) {
-        var subject = 'Coarts enquiry' + (items.length ? ' — ' + items.length + ' piece' + (items.length > 1 ? 's' : '') : '');
+        var subject = 'Coarts enquiry' + (items.length ? ': ' + items.length + ' piece' + (items.length > 1 ? 's' : '') : '');
         window.location.href = 'mailto:' + CONTACT.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         opened = true;
       }
       if (statusEl) statusEl.textContent = opened
-        ? 'Opening your message to Coarts — thank you. We reply within a business day.'
-        : 'Thank you. Coarts will be in touch within a business day.';
+        ? 'Opening your message to Coarts. Thank you; we reply within a business day.'
+        : 'Thank you. Your list is ready; reach us at coartslighting.com and we will follow up within a business day.';
     });
   }
 
