@@ -1,0 +1,5 @@
+# verification artifacts (screenshots, report.json) and deps
+lab/
+node_modules/
+package.json
+package-lock.json
