@@ -9,6 +9,11 @@ CSS/SVG rather than from stock photography, which suits a brand whose product
 
 It is a static site. No build step, no framework, no backend.
 
+**Single-file build / live preview.** `python3 build-artifact.py` inlines the CSS
+and JS into one portable file at `dist/coarts-artifact.html` (host it anywhere).
+A hosted preview of that file lives at
+https://claude.ai/code/artifact/60c24529-87e5-4eaf-8d17-13a4b67c43c3
+
 ## Run it
 
 ```bash
