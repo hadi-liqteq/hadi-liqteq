@@ -33,3 +33,12 @@ os.makedirs(os.path.join(here, "dist"), exist_ok=True)
 dest = os.path.join(here, "dist", "coarts-artifact.html")
 open(dest, "w", encoding="utf-8").write(out)
 print("wrote", dest, len(out.encode()), "bytes")
+
+# Also refresh the /docs copy that GitHub Pages serves (deploy-from-branch, /docs).
+import shutil
+docs = os.path.join(here, "docs")
+os.makedirs(docs, exist_ok=True)
+for f in ("index.html", "scrollcraft.css", "app.css", "scrollcraft.js", "app.js"):
+    shutil.copyfile(os.path.join(here, f), os.path.join(docs, f))
+open(os.path.join(docs, ".nojekyll"), "w").close()
+print("refreshed docs/ for GitHub Pages")

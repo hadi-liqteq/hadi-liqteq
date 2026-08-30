@@ -1,0 +1,553 @@
+/* ============================================================================
+   Coarts Lighting — theme + page.
+   Built on the scrollcraft taste floor (scrollcraft.css). This file is TWO
+   things only: the brand tokens, and the page's own classes. It never restyles
+   a [data-sc-*] selector — those are the engine's.
+
+   The whole page is lit from two numbers the dimmer writes on :root:
+     --room-warm    0 (cool, ~6500K)  ..  1 (warm, ~2200K)
+     --room-bright  0 (dimmed)        ..  1 (full)
+   Every glow, the accent, and the cream ground derive from them, so one drag
+   on the dimmer re-lights everything at once. That is the signature move.
+   ========================================================================== */
+
+:root {
+  /* the dimmer's live state (JS updates these; these are the defaults) */
+  --room-warm: 0.72;
+  --room-bright: 0.66;
+
+  /* Warmth as a MIX between a warm amber and a cool blue anchor, in oklab.
+     Real colour temperature runs amber -> neutral white -> blue; mixing the two
+     anchors passes through neutral, never through the green that a raw hue
+     rotation produces. --wp is the warm anchor's share. */
+  --wp: calc(var(--room-warm) * 100%);
+
+  /* the luminous colour used for every glow / pool / filament */
+  --glow:      color-mix(in oklab, hsl(38 97% 61%) var(--wp), hsl(205 94% 71%));
+  --glow-soft: color-mix(in oklab, hsl(40 92% 71%) var(--wp), hsl(202 86% 81%));
+  --filament:  color-mix(in oklab, hsl(45 98% 79%) var(--wp), hsl(200 92% 87%));
+
+  /* --- colour roles (light boutique) ------------------------------------- */
+  /* Ground is a warm cream that cools with temperature and dims toward a warm
+     taupe with brightness, but never leaves the light family, so dark ink keeps
+     its contrast across the whole dimmer range. */
+  --sc-canvas:  color-mix(in oklab,
+                  color-mix(in oklab, hsl(37 44% 92%) var(--wp), hsl(210 22% 92%)),
+                  hsl(30 22% 72%) calc((1 - var(--room-bright)) * 32%));
+  --sc-surface: color-mix(in oklab,
+                  color-mix(in oklab, hsl(40 52% 96%) var(--wp), hsl(210 26% 96%)),
+                  hsl(30 22% 74%) calc((1 - var(--room-bright)) * 20%));
+
+  --sc-ink:      hsl(30 26% 11%);     /* espresso, near-fixed */
+  --sc-ink-soft: hsl(31 16% 33%);     /* tinted brown, ~5.2:1 on cream */
+
+  /* Coarts brand blue, taken from the logo. The room LIGHT still warms and cools
+     with the dimmer (--glow / --filament / the ground); the brand ACCENT — logo,
+     buttons, progress bar, selection, badges — stays constant, so the identity
+     reads even while the light changes temperature. */
+  --brand:        #0f6fa0;   /* accent / button fill; white text clears 4.5:1 */
+  --brand-bright: #1c9cd8;   /* logo ring, decorative highlights */
+  --brand-ink:    #ffffff;
+  --logo-blue:    #1c9cd8;
+  --logo-violet:  #8e3f98;
+  --logo-green:   #3aaa35;
+  --logo-orange:  #f0891f;
+  --sc-accent:     var(--brand);
+  --sc-accent-ink: var(--brand-ink);
+
+  --sc-hairline: color-mix(in oklab, var(--sc-ink) 14%, transparent);
+  --sc-hairline-strong: color-mix(in oklab, var(--sc-ink) 26%, transparent);
+
+  /* type: a warm humanist display + a clean grotesque text. Not Inter. */
+  --sc-font-display: "Fraunces", "Hoefler Text", Georgia, serif;
+  --sc-font-text: "Instrument Sans", system-ui, -apple-system, sans-serif;
+  --sc-font-mono: "Instrument Sans", ui-monospace, monospace;
+
+  /* shadows tuned to a warm ground, not the engine's cold-dark default */
+  --sc-shadow-color: 30 40% 18%;
+  --sc-e1: 0 1px 2px hsl(var(--sc-shadow-color) / 0.14),
+           0 3px 8px -2px hsl(var(--sc-shadow-color) / 0.12);
+  --sc-e2: 0 2px 5px hsl(var(--sc-shadow-color) / 0.12),
+           0 12px 28px -6px hsl(var(--sc-shadow-color) / 0.18);
+  --sc-e3: 0 4px 10px hsl(var(--sc-shadow-color) / 0.12),
+           0 24px 56px -12px hsl(var(--sc-shadow-color) / 0.22);
+  --sc-edge: inset 0 1px 0 color-mix(in oklab, white 55%, transparent);
+
+  --sc-r-sm: 4px; --sc-r-md: 10px; --sc-r-lg: 18px;
+
+  color-scheme: light;
+}
+
+body { font-weight: 420; }
+
+/* Keep the focus ring high-contrast regardless of where the dimmer sits:
+   the accent can slide pale, ink never does. */
+:focus-visible { outline-color: var(--sc-ink); outline-offset: 3px; }
+
+::selection { background: var(--sc-accent); color: var(--sc-accent-ink); }
+
+/* Grain reads as tungsten dust on a light ground; ease it right down. */
+.sc-grain { opacity: 0.03; mix-blend-mode: multiply; }
+
+.sc-display { font-weight: 460; }
+.sc-display--xl, .sc-display--lg { font-weight: 430; letter-spacing: -0.02em; }
+
+h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 460; }
+
+/* the museum label — the one schema every object on the site is described in */
+.label {
+  font-family: var(--sc-font-mono);
+  font-size: var(--sc-t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sc-ink-soft);
+  display: flex; flex-wrap: wrap; gap: 0.35em 1.1em;
+  align-items: baseline;
+}
+.label b { color: var(--sc-ink); font-weight: 600; }
+.label .k { color: var(--sc-accent-ink); }
+.label--stack { flex-direction: column; gap: 0.5em; }
+
+/* the one CTA label used everywhere: "Enquire" */
+.btn {
+  --b-bg: var(--brand); --b-ink: var(--brand-ink);
+  appearance: none; border: 0; cursor: pointer;
+  font: inherit; font-weight: 560; letter-spacing: 0.01em;
+  display: inline-flex; align-items: center; gap: 0.6em;
+  padding: 0.7em 1.25em; border-radius: var(--sc-r-sm);
+  background: var(--b-bg); color: var(--b-ink);
+  box-shadow: var(--sc-e1);
+  transition: transform var(--sc-d-fast) var(--sc-ease-out),
+              box-shadow var(--sc-d-fast) var(--sc-ease-out),
+              background var(--sc-d-base) var(--sc-ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--sc-e2); }
+}
+.btn:active { transform: translateY(1px); box-shadow: var(--sc-e1); }
+.btn--ghost {
+  --b-bg: transparent; --b-ink: var(--sc-ink);
+  box-shadow: inset 0 0 0 1px var(--sc-hairline-strong);
+}
+.btn--ghost:active { box-shadow: inset 0 0 0 1px var(--sc-hairline-strong); }
+.btn--sm { padding: 0.5em 0.9em; font-size: var(--sc-t-sm); }
+
+.link-quiet {
+  color: var(--sc-ink); text-decoration: underline;
+  text-decoration-color: var(--sc-hairline-strong);
+  text-underline-offset: 0.28em; text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--sc-d-base) var(--sc-ease-out);
+}
+.link-quiet:hover { text-decoration-color: var(--sc-accent); }
+
+/* ===================================================== fixed chrome (nav) == */
+.bar {
+  position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
+  display: flex; align-items: center; gap: var(--sc-5);
+  padding: clamp(0.7rem, 1.6vw, 1.1rem) var(--sc-gutter);
+  background: color-mix(in oklab, var(--sc-canvas) 82%, transparent);
+  backdrop-filter: blur(10px) saturate(1.1);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--sc-d-base) var(--sc-ease-out),
+              background var(--sc-d-base) var(--sc-ease-out);
+}
+.bar.is-stuck { border-color: var(--sc-hairline); }
+.mark {
+  display: inline-flex; align-items: center; gap: 0.6ch;
+  font-family: var(--sc-font-display); font-size: var(--sc-t-lg);
+  letter-spacing: 0.02em; color: var(--sc-ink); text-decoration: none;
+  line-height: 1;
+}
+.mark .logo { width: 1.9em; height: 1.9em; flex: none; display: block; }
+.mark .logo .ring { filter: drop-shadow(0 0 calc(2px + var(--room-bright) * 5px) color-mix(in oklab, var(--glow) 60%, transparent)); }
+.mark__wd { display: inline-flex; align-items: baseline; gap: 0.5ch; }
+.mark small {
+  font-family: var(--sc-font-mono); font-size: 0.44em; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--sc-ink-soft);
+}
+@media (max-width: 520px) { .mark__wd small { display: none; } }
+.bar__nav { display: flex; gap: var(--sc-5); margin-left: auto; }
+.bar__nav a {
+  font-size: var(--sc-t-sm); color: var(--sc-ink-soft); text-decoration: none;
+  letter-spacing: 0.01em; transition: color var(--sc-d-fast) var(--sc-ease-out);
+}
+.bar__nav a:hover { color: var(--sc-ink); }
+.bar__actions { display: flex; align-items: center; gap: var(--sc-3); }
+
+/* enquiry count badge on the nav button */
+.enq-open { position: relative; }
+.enq-count {
+  min-width: 1.35em; height: 1.35em; padding: 0 0.35em; border-radius: var(--sc-r-pill);
+  display: inline-grid; place-items: center;
+  background: var(--sc-accent); color: var(--sc-accent-ink);
+  font-family: var(--sc-font-mono); font-size: 0.72em; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.enq-count[hidden] { display: none; }
+
+.burger { display: none; }
+
+@media (max-width: 860px) {
+  .bar__nav { display: none; }
+  .bar { gap: var(--sc-3); }
+  .burger {
+    display: inline-grid; place-items: center; width: 2.6rem; height: 2.6rem;
+    background: transparent; border: 1px solid var(--sc-hairline-strong);
+    border-radius: var(--sc-r-sm); cursor: pointer; color: var(--sc-ink);
+  }
+  .sheet-nav {
+    position: fixed; inset: 0; z-index: calc(var(--sc-z-chrome) + 5);
+    background: var(--sc-canvas); padding: 22vh var(--sc-gutter) var(--sc-8);
+    display: flex; flex-direction: column; gap: var(--sc-5);
+    transform: translateY(-100%); transition: transform var(--sc-d-slow) var(--sc-ease-drawer);
+  }
+  .sheet-nav.is-open { transform: none; }
+  .sheet-nav a { font-family: var(--sc-font-display); font-size: var(--sc-t-2xl); color: var(--sc-ink); text-decoration: none; }
+  .sheet-nav .close { position: absolute; top: var(--sc-5); right: var(--sc-gutter); }
+}
+@media (min-width: 861px) { .sheet-nav { display: none; } }
+
+/* ============================================ the dimmer (signature move) == */
+.dimmer {
+  position: fixed; z-index: calc(var(--sc-z-chrome) + 1);
+  left: var(--sc-gutter); bottom: clamp(1rem, 3vw, 2rem);
+  width: min(20rem, calc(100vw - var(--sc-gutter) * 2));
+  padding: 0.9rem 1.05rem 1.05rem;
+  background: color-mix(in oklab, var(--sc-surface) 88%, transparent);
+  backdrop-filter: blur(12px) saturate(1.2);
+  border: 1px solid var(--sc-hairline);
+  border-radius: var(--sc-r-lg);
+  box-shadow: var(--sc-e2), var(--sc-edge);
+  transition: transform var(--sc-d-slow) var(--sc-ease-drawer),
+              opacity var(--sc-d-base) var(--sc-ease-out);
+}
+.dimmer__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--sc-3); margin-bottom: 0.7rem;
+}
+.dimmer__title { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.2em; text-transform: uppercase; color: var(--sc-ink-soft); }
+.dimmer__read {
+  font-family: var(--sc-font-mono); font-size: var(--sc-t-sm); font-weight: 600;
+  color: var(--sc-ink); font-variant-numeric: tabular-nums;
+  display: inline-flex; align-items: center; gap: 0.5ch;
+}
+.dimmer__read .swatch {
+  width: 0.85em; height: 0.85em; border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 calc(4px + var(--room-bright) * 12px) var(--glow);
+}
+.dimmer__row { display: grid; grid-template-columns: 1.2rem 1fr; align-items: center; gap: 0.7rem; }
+.dimmer__row + .dimmer__row { margin-top: 0.55rem; }
+.dimmer__row svg { width: 1.2rem; height: 1.2rem; color: var(--sc-ink-soft); }
+
+/* a real range input, restyled — keyboard accessible, unlike a custom drag */
+.dial { -webkit-appearance: none; appearance: none; width: 100%; height: 1.5rem; background: transparent; cursor: pointer; }
+.dial::-webkit-slider-runnable-track {
+  height: 5px; border-radius: var(--sc-r-pill);
+  background: linear-gradient(90deg, hsl(30 90% 62%), hsl(45 92% 70%), hsl(200 40% 84%), hsl(212 70% 74%));
+}
+.dial--bright::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, color-mix(in oklab, var(--sc-ink) 30%, var(--sc-surface)), var(--glow));
+}
+.dial::-moz-range-track { height: 5px; border-radius: 999px; background: linear-gradient(90deg, hsl(30 90% 62%), hsl(45 92% 70%), hsl(200 40% 84%), hsl(212 70% 74%)); }
+.dial--bright::-moz-range-track { background: linear-gradient(90deg, color-mix(in oklab, var(--sc-ink) 30%, var(--sc-surface)), var(--glow)); }
+.dial::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; margin-top: -7px;
+  width: 19px; height: 19px; border-radius: 50%;
+  background: var(--sc-canvas); border: 2px solid var(--sc-ink);
+  box-shadow: var(--sc-e1); transition: box-shadow var(--sc-d-fast) var(--sc-ease-out);
+}
+.dial::-moz-range-thumb {
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--sc-canvas); border: 2px solid var(--sc-ink); box-shadow: var(--sc-e1);
+}
+.dial:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px color-mix(in oklab, var(--sc-ink) 40%, transparent); }
+.dimmer__hint { margin-top: 0.7rem; font-size: var(--sc-t-xs); color: var(--sc-ink-soft); line-height: 1.4; }
+
+@media (max-width: 860px) {
+  .dimmer { left: 50%; translate: -50% 0; bottom: 0.75rem; width: min(24rem, calc(100vw - 1.5rem)); }
+  .dimmer.is-min { transform: translateY(calc(100% - 2.9rem)); }
+}
+.dimmer__toggle { display: none; }
+
+/* ================================================================ scenes == */
+/* A pinned stage that renders a room out of light, no photography.
+   height matches .sc-stage exactly (one viewport). It must, because this class
+   sits ON the [data-sc-stage] element and app.css loads after the engine CSS:
+   a `height:100%` here would beat .sc-stage's 100vh and make the sticky stage as
+   tall as its whole multi-viewport act, which silently defeats the pin. */
+.scene { display: grid; place-items: center; height: 100vh; height: 100svh; overflow: clip; }
+.scene .roomfloor {
+  position: absolute; inset: auto 0 0 0; height: 42%;
+  background:
+    radial-gradient(120% 80% at 50% 0%, color-mix(in oklab, var(--glow) 22%, transparent), transparent 60%),
+    linear-gradient(180deg, transparent, color-mix(in oklab, var(--sc-ink) 8%, transparent));
+  pointer-events: none;
+}
+
+/* --- a fixture rendered in CSS: cord, shade, bulb, and a pool of light ---- */
+.fixture { position: relative; }
+.fixture .cord { position: absolute; left: 50%; top: -40vh; width: 2px; height: 40vh; translate: -50% 0;
+  background: linear-gradient(180deg, transparent, var(--sc-hairline-strong)); }
+.fixture .shade {
+  width: var(--fw, 12rem); aspect-ratio: 2 / 1; border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--sc-ink) 82%, var(--glow)) 0%, color-mix(in oklab, var(--sc-ink) 55%, var(--glow)) 60%, var(--glow) 100%);
+  box-shadow: var(--sc-e2), var(--sc-edge);
+  position: relative;
+}
+.fixture .bulb {
+  position: absolute; left: 50%; bottom: -0.35em; translate: -50% 0;
+  width: 1.1em; height: 1.1em; border-radius: 50%;
+  background: radial-gradient(circle, var(--filament), var(--glow) 60%, transparent 72%);
+  filter: blur(0.3px);
+  opacity: calc(0.35 + var(--room-bright) * 0.65);
+}
+.fixture .pool {
+  position: absolute; left: 50%; top: 55%; translate: -50% 0;
+  width: var(--pool, 34rem); aspect-ratio: 1 / 1;
+  background: radial-gradient(circle,
+    color-mix(in oklab, var(--glow) calc(28% + var(--room-bright) * 34%), transparent) 0%,
+    color-mix(in oklab, var(--glow) 10%, transparent) 34%,
+    transparent 66%);
+  pointer-events: none; z-index: -1;
+  transition: opacity var(--sc-d-slow) var(--sc-ease-out);
+}
+
+/* welcome scene layout: object one lit on the right, its label on the left */
+.scene--welcome .inner {
+  width: 100%; max-width: var(--sc-maxw); margin-inline: auto;
+  padding-inline: var(--sc-gutter);
+  display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: var(--sc-7);
+}
+.welcome-copy { max-width: 34rem; z-index: var(--sc-z-copy); }
+.welcome-copy .greet { font-family: var(--sc-font-display); font-size: var(--sc-t-2xl); line-height: 1.04; letter-spacing: -0.02em; color: var(--sc-ink); margin: 0 0 var(--sc-4); }
+.welcome-copy .sub { color: var(--sc-ink-soft); max-width: 40ch; margin: 0 0 var(--sc-5); }
+.welcome-copy .label { margin-top: var(--sc-5); }
+.welcome-stage { position: relative; height: 62vh; display: grid; place-items: center; }
+.welcome-stage .fixture { --fw: clamp(8rem, 16vw, 14rem); --pool: clamp(22rem, 40vw, 40rem); }
+
+@media (max-width: 860px) {
+  .scene--welcome .inner { grid-template-columns: 1fr; gap: var(--sc-5); }
+  .welcome-stage { height: 40vh; order: -1; }
+  .welcome-copy .greet { font-size: var(--sc-t-xl); }
+}
+
+/* --- the peak: one fixture, and a bloom driven straight off --sc-p -------- */
+.scene--bloom { --p: var(--sc-p, 0); }
+.bloom-room { position: relative; width: 100%; height: 100%; display: grid; place-items: center; }
+.bloom-fixture { --fw: clamp(10rem, 22vw, 20rem); position: relative; z-index: 2; }
+/* the bloom: near-dark until the reader is a third of the way in, then it
+   grows and fills the room. Silence -> light. */
+.bloom-glow {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 160vmax; height: 160vmax; border-radius: 50%; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle,
+    color-mix(in oklab, var(--glow) 80%, transparent) 0%,
+    color-mix(in oklab, var(--glow) 30%, transparent) 18%,
+    transparent 42%);
+  opacity: calc(clamp(0, (var(--p) - 0.18) * 2.1, 1) * (0.5 + var(--room-bright) * 0.5));
+  scale: calc(0.24 + clamp(0, (var(--p) - 0.15) * 1.5, 1) * 0.9);
+  filter: blur(6px);
+}
+.scene--bloom .roomfloor { opacity: calc(0.3 + clamp(0, (var(--p) - 0.2) * 1.6, 1) * 0.7); }
+.bloom-copy { position: absolute; z-index: 3; inset-inline: var(--sc-gutter); text-align: center; bottom: 12vh; }
+.bloom-copy h2 { font-size: var(--sc-t-3xl); line-height: 1.02; max-width: 18ch; margin: 0 auto; color: var(--sc-ink); }
+@media (prefers-reduced-motion: reduce) {
+  .bloom-glow { opacity: calc(0.7 * (0.5 + var(--room-bright) * 0.5)); scale: 1; }
+}
+
+/* ================================================= the collection rail ==== */
+.rail { align-items: stretch; gap: var(--sc-6); padding-inline: var(--sc-gutter); height: 100%; }
+.rail > * { flex: 0 0 auto; }
+.rail__lead { width: min(30rem, 74vw); align-self: center; }
+.rail__lead h2 { font-size: var(--sc-t-3xl); line-height: 1; margin: 0 0 var(--sc-4); }
+.rail__lead p { color: var(--sc-ink-soft); max-width: 34ch; }
+.rail__end { width: min(24rem, 70vw); align-self: center; }
+.rail__end p { color: var(--sc-ink-soft); }
+
+.fixture-card {
+  width: clamp(17rem, 24vw, 21rem); align-self: center;
+  display: flex; flex-direction: column; gap: var(--sc-4);
+  padding: var(--sc-5); border-radius: var(--sc-r-lg);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--sc-surface) 70%, transparent), transparent);
+  border: 1px solid var(--sc-hairline);
+  will-change: transform, opacity;
+}
+.fixture-card .art {
+  position: relative; height: 15rem; border-radius: var(--sc-r-md); overflow: clip;
+  background: radial-gradient(90% 70% at 50% 18%, color-mix(in oklab, var(--glow) 16%, transparent), transparent 60%),
+              color-mix(in oklab, var(--sc-ink) 6%, transparent);
+  display: grid; place-items: center;
+}
+.fixture-card .name { font-family: var(--sc-font-display); font-size: var(--sc-t-lg); color: var(--sc-ink); margin: 0; }
+
+/* staggered settle, driven from the act's --sc-p. Exempt the first card, floor
+   the opacity so a not-yet-arrived card reads as arriving, not as broken. */
+@media (prefers-reduced-motion: no-preference) {
+  .rail .fixture-card {
+    --start: calc(var(--i, 0) * 0.09);
+    opacity: clamp(0.5, calc((var(--sc-p, 1) - var(--start)) * 6), 1);
+    transform: translateY(calc((1 - clamp(0, calc((var(--sc-p, 1) - var(--start)) * 6), 1)) * 1.4rem));
+  }
+}
+
+/* ============================================================ flow copy ==== */
+.pinned-after { padding-block-start: var(--sc-6); }  /* reduced pad after a pin */
+
+.craft-head { max-width: 40rem; }
+.craft-head h2 { font-size: var(--sc-t-3xl); line-height: 1.02; margin: 0 0 var(--sc-4); }
+.craft-head p { color: var(--sc-ink-soft); max-width: 54ch; }
+
+/* real-figures strip: not boxed cards, just numbers on space with hairlines */
+.stats {
+  margin-top: var(--sc-8); display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; border-block: 1px solid var(--sc-hairline);
+}
+.stat { padding: var(--sc-5) var(--sc-5) var(--sc-5) 0; }
+.stat + .stat { border-left: 1px solid var(--sc-hairline); padding-left: var(--sc-5); }
+.stat__n {
+  display: block; font-family: var(--sc-font-display); font-weight: 460;
+  font-size: var(--sc-t-2xl); line-height: 1; color: var(--sc-ink);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.stat__l { display: block; margin-top: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); text-wrap: pretty; }
+@media (max-width: 780px) { .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--sc-hairline); } }
+@media (max-width: 420px) { .stats { grid-template-columns: 1fr; }
+  .stat + .stat { border-left: 0; padding-left: 0; border-top: 1px solid var(--sc-hairline); } }
+
+/* spec rows — museum labels, not marketing. Fact, then the fact's value. */
+.specs { margin-top: var(--sc-8); display: grid; gap: 0; border-top: 1px solid var(--sc-hairline); }
+.spec {
+  display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--sc-5);
+  padding: var(--sc-5) 0; border-bottom: 1px solid var(--sc-hairline); align-items: baseline;
+}
+.spec dt { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--sc-ink-soft); margin: 0; }
+.spec dd { margin: 0; color: var(--sc-ink); font-size: var(--sc-t-lg); line-height: 1.35; font-family: var(--sc-font-display); }
+.spec dd small { display: block; font-family: var(--sc-font-text); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); margin-top: 0.3em; }
+@media (max-width: 680px) { .spec { grid-template-columns: 1fr; gap: var(--sc-2); } }
+
+/* the Kelvin scale — real numbers (physics), and the dimmer's marker rides it */
+.kelvin { margin-top: var(--sc-8); }
+.kelvin__bar {
+  position: relative; height: 4.5rem; border-radius: var(--sc-r-md); overflow: visible;
+  background: linear-gradient(90deg, hsl(30 92% 60%), hsl(40 94% 68%), hsl(48 88% 80%), hsl(200 26% 88%), hsl(210 66% 74%));
+  box-shadow: var(--sc-edge), var(--sc-e1);
+  clip-path: inset(0 0 0 0);
+}
+.kelvin__marker {
+  position: absolute; top: -0.6rem; bottom: -0.6rem; width: 2px;
+  /* warm on the left (candle) -> cool on the right (daylight): warm=1 sits at 0% */
+  left: calc((1 - var(--room-warm)) * 100%);
+  translate: -50% 0;
+  background: var(--sc-ink);
+  transition: left var(--sc-d-base) var(--sc-ease-out);
+}
+.kelvin__marker::after {
+  content: attr(data-k); position: absolute; top: -1.6rem; left: 50%; translate: -50% 0;
+  font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); font-weight: 700; white-space: nowrap;
+  color: var(--sc-ink); font-variant-numeric: tabular-nums;
+}
+.kelvin__scale { display: flex; justify-content: space-between; margin-top: var(--sc-3); }
+.kelvin__scale span { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.08em; color: var(--sc-ink-soft); font-variant-numeric: tabular-nums; }
+
+/* ============================================================= the range == */
+.range-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--sc-5); margin-bottom: var(--sc-7); }
+.range-head h2 { font-size: var(--sc-t-3xl); line-height: 1; margin: 0; max-width: 16ch; }
+.range-head p { color: var(--sc-ink-soft); max-width: 34ch; margin: 0; }
+
+/* asymmetric grid — never three equal feature columns */
+.grid {
+  display: grid; gap: var(--sc-5);
+  grid-template-columns: repeat(6, 1fr);
+}
+.product { grid-column: span 2; display: flex; flex-direction: column; }
+.product--wide { grid-column: span 3; }
+.product--tall { grid-column: span 3; }
+@media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } .product, .product--wide, .product--tall { grid-column: span 2; } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+
+.product .art {
+  position: relative; border-radius: var(--sc-r-lg); overflow: clip;
+  aspect-ratio: 4 / 5; display: grid; place-items: center;
+  background:
+    radial-gradient(80% 60% at 50% 22%, color-mix(in oklab, var(--glow) 20%, transparent), transparent 62%),
+    linear-gradient(180deg, color-mix(in oklab, var(--sc-surface) 60%, transparent), color-mix(in oklab, var(--sc-ink) 5%, transparent));
+  border: 1px solid var(--sc-hairline);
+  will-change: transform;
+}
+.product--wide .art, .product--tall .art { aspect-ratio: 16 / 11; }
+.product .art .fixture { --fw: clamp(6rem, 12vw, 9rem); --pool: clamp(14rem, 26vw, 22rem); }
+.product__body { padding: var(--sc-4) var(--sc-1) 0; display: flex; flex-direction: column; gap: var(--sc-3); flex: 1; }
+.product__title { font-family: var(--sc-font-display); font-size: var(--sc-t-lg); color: var(--sc-ink); margin: 0; }
+.product__row { display: flex; align-items: center; justify-content: space-between; gap: var(--sc-4); margin-top: auto; padding-top: var(--sc-3); }
+.product .label { font-size: 0.72rem; }
+
+/* ================================================================ close ==== */
+.scene--close { text-align: center; }
+.close-inner { max-width: 42rem; padding-inline: var(--sc-gutter); }
+.close-inner .eyebrow { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.24em; text-transform: uppercase; color: var(--sc-ink-soft); margin: 0 0 var(--sc-5); }
+.close-inner h2 { font-size: var(--sc-t-3xl); line-height: 1.03; margin: 0 0 var(--sc-6); color: var(--sc-ink); }
+.close-inner .actions { display: flex; gap: var(--sc-3); justify-content: center; flex-wrap: wrap; }
+.close-plate {
+  margin-top: var(--sc-9); display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-6);
+  justify-content: center; font-family: var(--sc-font-mono); font-size: var(--sc-t-xs);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--sc-ink-soft);
+}
+.close-plate a { color: var(--sc-ink-soft); text-decoration: none; }
+.close-plate a:hover { color: var(--sc-ink); }
+
+/* real footer, inside the last stage so there is no dead tail after the CTA */
+.foot {
+  position: absolute; inset: auto 0 0 0; padding: var(--sc-5) var(--sc-gutter);
+  display: flex; flex-wrap: wrap; gap: var(--sc-3) var(--sc-6); align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--sc-hairline); font-size: var(--sc-t-sm); color: var(--sc-ink-soft);
+}
+.foot a { color: var(--sc-ink-soft); text-decoration: none; }
+.foot a:hover { color: var(--sc-ink); }
+.foot__social { display: flex; gap: var(--sc-4); }
+/* clear the fixed dimmer dock, which sits bottom-left */
+@media (min-width: 861px) { .foot { padding-left: calc(var(--sc-gutter) + 21rem); } }
+
+/* ===================================================== enquiry drawer ====== */
+.scrim-blackout {
+  position: fixed; inset: 0; z-index: calc(var(--sc-z-chrome) + 9);
+  background: color-mix(in oklab, var(--sc-ink) 42%, transparent);
+  opacity: 0; visibility: hidden; transition: opacity var(--sc-d-base) var(--sc-ease-out), visibility var(--sc-d-base);
+}
+.scrim-blackout.is-open { opacity: 1; visibility: visible; }
+.drawer {
+  position: fixed; inset: 0 0 0 auto; z-index: calc(var(--sc-z-chrome) + 10);
+  width: min(28rem, 100vw); background: var(--sc-canvas);
+  box-shadow: var(--sc-e3); display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform var(--sc-d-slow) var(--sc-ease-drawer);
+}
+.drawer.is-open { transform: none; }
+.drawer__head { display: flex; align-items: center; justify-content: space-between; padding: var(--sc-5) var(--sc-5) var(--sc-4); border-bottom: 1px solid var(--sc-hairline); }
+.drawer__head h2 { font-size: var(--sc-t-xl); margin: 0; }
+.drawer__body { flex: 1; overflow-y: auto; padding: var(--sc-4) var(--sc-5); display: flex; flex-direction: column; gap: var(--sc-3); }
+.drawer__empty { color: var(--sc-ink-soft); padding: var(--sc-6) 0; text-align: center; }
+.enq-item { display: grid; grid-template-columns: 3rem 1fr auto; gap: var(--sc-4); align-items: center; padding: var(--sc-3) 0; border-bottom: 1px solid var(--sc-hairline); }
+.enq-item .thumb { width: 3rem; height: 3rem; border-radius: var(--sc-r-sm); background: radial-gradient(70% 60% at 50% 30%, var(--glow), color-mix(in oklab, var(--sc-ink) 20%, transparent) 70%); }
+.enq-item .meta strong { display: block; font-family: var(--sc-font-display); color: var(--sc-ink); font-weight: 500; }
+.enq-item .meta span { font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+.enq-item .rm { background: none; border: 0; color: var(--sc-ink-soft); cursor: pointer; font-size: var(--sc-t-sm); text-decoration: underline; text-underline-offset: 0.2em; }
+.enq-item .rm:hover { color: var(--sc-ink); }
+.drawer__foot { padding: var(--sc-5); border-top: 1px solid var(--sc-hairline); display: flex; flex-direction: column; gap: var(--sc-3); }
+.field { display: flex; flex-direction: column; gap: var(--sc-2); }
+.field label { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--sc-ink-soft); }
+.field input, .field textarea {
+  width: 100%; padding: 0.7em 0.8em; border-radius: var(--sc-r-sm);
+  border: 1px solid var(--sc-hairline-strong); background: var(--sc-surface); color: var(--sc-ink);
+}
+.field textarea { resize: vertical; min-height: 4.5rem; }
+.icon-btn { background: none; border: 0; cursor: pointer; color: var(--sc-ink); width: 2.4rem; height: 2.4rem; display: grid; place-items: center; border-radius: var(--sc-r-sm); }
+.icon-btn:hover { background: color-mix(in oklab, var(--sc-ink) 8%, transparent); }
+.icon-btn svg { width: 1.3rem; height: 1.3rem; }
+
+/* a hairline the width of the page, used to separate flow sections */
+.divide { border: 0; border-top: 1px solid var(--sc-hairline); margin: 0; }
+
+/* small helper: a soft caption under a rendered object */
+.cap { font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
