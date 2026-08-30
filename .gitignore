@@ -3,3 +3,6 @@ lab/
 node_modules/
 package.json
 package-lock.json
+
+# local single-file preview builds (canonical output is docs/)
+dist/
