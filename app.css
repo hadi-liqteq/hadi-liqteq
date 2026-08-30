@@ -41,9 +41,19 @@
   --sc-ink:      hsl(30 26% 11%);     /* espresso, near-fixed */
   --sc-ink-soft: hsl(31 16% 33%);     /* tinted brown, ~5.2:1 on cream */
 
-  /* the light itself is the accent; it shifts warm<->cool with the room */
-  --sc-accent:     color-mix(in oklab, hsl(32 88% 47%) var(--wp), hsl(210 68% 50%));
-  --sc-accent-ink: hsl(30 30% 10%);
+  /* Coarts brand blue, taken from the logo. The room LIGHT still warms and cools
+     with the dimmer (--glow / --filament / the ground); the brand ACCENT — logo,
+     buttons, progress bar, selection, badges — stays constant, so the identity
+     reads even while the light changes temperature. */
+  --brand:        #0f6fa0;   /* accent / button fill; white text clears 4.5:1 */
+  --brand-bright: #1c9cd8;   /* logo ring, decorative highlights */
+  --brand-ink:    #ffffff;
+  --logo-blue:    #1c9cd8;
+  --logo-violet:  #8e3f98;
+  --logo-green:   #3aaa35;
+  --logo-orange:  #f0891f;
+  --sc-accent:     var(--brand);
+  --sc-accent-ink: var(--brand-ink);
 
   --sc-hairline: color-mix(in oklab, var(--sc-ink) 14%, transparent);
   --sc-hairline-strong: color-mix(in oklab, var(--sc-ink) 26%, transparent);
@@ -100,7 +110,7 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 460; }
 
 /* the one CTA label used everywhere: "Enquire" */
 .btn {
-  --b-bg: var(--sc-ink); --b-ink: var(--sc-canvas);
+  --b-bg: var(--brand); --b-ink: var(--brand-ink);
   appearance: none; border: 0; cursor: pointer;
   font: inherit; font-weight: 560; letter-spacing: 0.01em;
   display: inline-flex; align-items: center; gap: 0.6em;
@@ -143,21 +153,19 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 460; }
 }
 .bar.is-stuck { border-color: var(--sc-hairline); }
 .mark {
-  display: inline-flex; align-items: baseline; gap: 0.5ch;
+  display: inline-flex; align-items: center; gap: 0.6ch;
   font-family: var(--sc-font-display); font-size: var(--sc-t-lg);
   letter-spacing: 0.02em; color: var(--sc-ink); text-decoration: none;
   line-height: 1;
 }
-.mark .dot {
-  width: 0.42em; height: 0.42em; border-radius: 50%; margin-right: 0.15em;
-  background: var(--sc-accent);
-  box-shadow: 0 0 calc(6px + var(--room-bright) * 14px) var(--glow);
-  translate: 0 -0.02em;
-}
+.mark .logo { width: 1.9em; height: 1.9em; flex: none; display: block; }
+.mark .logo .ring { filter: drop-shadow(0 0 calc(2px + var(--room-bright) * 5px) color-mix(in oklab, var(--glow) 60%, transparent)); }
+.mark__wd { display: inline-flex; align-items: baseline; gap: 0.5ch; }
 .mark small {
-  font-family: var(--sc-font-mono); font-size: 0.5em; letter-spacing: 0.34em;
+  font-family: var(--sc-font-mono); font-size: 0.44em; letter-spacing: 0.28em;
   text-transform: uppercase; color: var(--sc-ink-soft);
 }
+@media (max-width: 520px) { .mark__wd small { display: none; } }
 .bar__nav { display: flex; gap: var(--sc-5); margin-left: auto; }
 .bar__nav a {
   font-size: var(--sc-t-sm); color: var(--sc-ink-soft); text-decoration: none;

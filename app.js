@@ -20,12 +20,12 @@
   /* --- where a completed enquiry goes. The client sets these to go live; until
         then the form composes the message and opens a mail draft on their own
         domain. Nothing is invented and nothing is sent silently. -------------- */
-  // The catalogue prints no phone or email, only the website, so nothing is
-  // invented here. Fill these with the real inbox / WhatsApp number to go live;
-  // until then the form confirms on-page and points to the website + socials.
+  // Real Coarts contact. The enquiry form composes a message to the inbox; set
+  // `whatsapp` (digits only, with country code) to route to WhatsApp instead.
   var CONTACT = {
-    email: '',        // e.g. 'sales@coartslighting.com'
-    whatsapp: '',     // e.g. '923001234567' (digits only, with country code)
+    email: 'info@coartslighting.com',
+    phone: '+92 21 111 509 509',
+    whatsapp: '',     // e.g. '922111509509' to send the enquiry via WhatsApp
     website: 'https://www.coartslighting.com'
   };
 
