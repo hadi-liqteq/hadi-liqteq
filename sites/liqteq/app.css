@@ -1,0 +1,224 @@
+/* ============================================================================
+   Liqteq (Liquid Technologies) — theme + page.
+   Built on the scrollcraft taste floor. Typographic-poster grammar: type IS the
+   imagery, scale contrast does the work. Dark, deep-violet world.
+
+   Signature move: the hero word is a variable font (Space Grotesk `wght`) whose
+   glyphs flow toward the pointer and undulate with scroll — the type behaves
+   like a liquid. All in app.js; the engine is untouched.
+   ========================================================================== */
+
+:root {
+  /* --- brand accent (deep violet). Swap --accent-h/s or these hexes when the
+         real logo colours arrive; everything derives from them. ------------- */
+  --accent:        #a78bfa;         /* electric violet, for type + links */
+  --accent-bright: #c4b5fd;
+  --accent-deep:   #6d4bd0;         /* fills that carry white/near-white text */
+  --accent-ink:    #0a0710;
+
+  /* --- colour roles (dark violet) --------------------------------------- */
+  --sc-canvas:  #0b0910;            /* near-black, violet-tinted. Drift moves it. */
+  --sc-surface: #171226;
+  --sc-ink:     #efeaf7;            /* near-white, cool */
+  --sc-ink-soft:#a99fc0;            /* tinted violet-grey, ~5:1 on the ground */
+  --sc-accent:     var(--accent);
+  --sc-accent-ink: var(--accent-ink);
+
+  --sc-hairline: color-mix(in oklab, var(--sc-ink) 15%, transparent);
+  --sc-hairline-strong: color-mix(in oklab, var(--sc-ink) 30%, transparent);
+
+  /* type: a variable grotesque for the poster voice + a clean text face. */
+  --sc-font-display: "Space Grotesk", "Archivo", system-ui, sans-serif;
+  --sc-font-text:    "Instrument Sans", system-ui, -apple-system, sans-serif;
+  --sc-font-mono:    "Space Grotesk", ui-monospace, monospace;
+
+  --sc-shadow-color: 265 60% 3%;
+
+  --sc-r-sm: 5px; --sc-r-md: 12px; --sc-r-lg: 18px;
+  color-scheme: dark;
+}
+
+body { font-weight: 430; }
+/* grain reads as sensor noise on the dark ground; a touch stronger than default */
+.sc-grain { opacity: 0.05; }
+
+/* focus ring stays the bright accent — high contrast on the dark ground */
+:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
+
+/* the one CTA idiom in this grammar: a plain underlined link, not a button */
+.cta {
+  display: inline-flex; align-items: center; gap: 0.5ch;
+  font: inherit; font-weight: 560; letter-spacing: 0.01em; color: var(--sc-ink);
+  background: none; border: 0; cursor: pointer; padding: 0;
+  text-decoration: underline; text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px; text-underline-offset: 0.28em;
+  transition: text-underline-offset var(--sc-d-base) var(--sc-ease-out), color var(--sc-d-base) var(--sc-ease-out);
+}
+.cta:hover { text-underline-offset: 0.42em; color: var(--accent-bright); }
+.cta svg { width: 0.9em; height: 0.9em; transition: transform var(--sc-d-base) var(--sc-ease-out); }
+.cta:hover svg { transform: translateX(3px); }
+.cta--lg { font-size: var(--sc-t-lg); }
+
+.link-quiet {
+  color: var(--sc-ink-soft); text-decoration: underline;
+  text-decoration-color: var(--sc-hairline-strong); text-underline-offset: 0.24em;
+  transition: color var(--sc-d-base) var(--sc-ease-out), text-decoration-color var(--sc-d-base) var(--sc-ease-out);
+}
+.link-quiet:hover { color: var(--sc-ink); text-decoration-color: var(--accent); }
+
+/* ===================================================== fixed chrome ======= */
+/* Minimal: the wordmark at small scale + one way in. In a poster the wordmark
+   also appears at composition scale in the hero; this is just persistent reach. */
+.bar {
+  position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: clamp(0.8rem, 1.8vw, 1.3rem) var(--sc-gutter);
+  color: var(--sc-ink);   /* every drift stop is dark, so light chrome stays legible */
+}
+.bar__mark { display: inline-flex; align-items: center; gap: 0.6ch; text-decoration: none; color: #fff; }
+.bar__mark .glyph { width: 1.5em; height: 1.5em; flex: none; }
+.bar__mark .wd { font-family: var(--sc-font-display); font-weight: 600; font-size: var(--sc-t-lg); letter-spacing: -0.01em; }
+.bar__mark .wd b { color: inherit; font-weight: 600; }
+.bar .cta { color: #fff; text-decoration-color: #fff; }
+
+/* ============================================================ poster ======= */
+.stage {
+  height: 100vh; height: 100svh;   /* MUST match .sc-stage; never 100% (kills pin) */
+  display: grid; place-items: center; overflow: clip;
+  padding-inline: var(--sc-gutter); text-align: center;
+}
+.stage__in { width: 100%; max-width: 78rem; margin-inline: auto; }
+
+/* the display scale ramp for a poster — bigger than the taste cap, on purpose,
+   because this whole page is one hero moment. Tracking tightens hard at size. */
+.t-giant  { font-size: clamp(3.6rem, 20vw, 19rem); line-height: 0.92; letter-spacing: -0.045em; }
+.t-huge   { font-size: clamp(3rem, 13vw, 12rem);  line-height: 0.94; letter-spacing: -0.04em; }
+.t-big    { font-size: clamp(2.2rem, 8vw, 6.5rem); line-height: 0.98; letter-spacing: -0.03em; }
+.t-mid    { font-size: clamp(1.6rem, 4.5vw, 3.4rem); line-height: 1.04; letter-spacing: -0.02em; }
+.ink-soft { color: var(--sc-ink-soft); }
+.accent   { color: var(--accent); }
+
+/* HERO ----------------------------------------------------------------------*/
+.stage--hero .kicker {
+  font-family: var(--sc-font-mono); font-size: var(--sc-t-sm); letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--sc-ink-soft); margin-bottom: clamp(1rem, 3vh, 2.4rem);
+}
+/* the liquid word. Per-glyph spans get their `wght` set from app.js. */
+.liquid { display: inline-block; font-family: var(--sc-font-display); font-weight: 500;
+  font-size: clamp(3.4rem, 21vw, 21rem); line-height: 0.9; letter-spacing: -0.05em;
+  color: var(--sc-ink); }
+.liquid .lq { display: inline-block; will-change: font-variation-settings, transform;
+  font-variation-settings: "wght" 500; }
+.hero-sub { margin-top: clamp(1rem, 3vh, 2.2rem); }
+.hero-sub h1 { font-weight: 500; color: var(--sc-ink); }
+/* subtle scroll-scale so the hero settles as the reader arrives */
+.stage--hero .stage__in { transform: scale(calc(0.985 + var(--sc-p, 0) * 0.03)); transform-origin: 50% 46%; }
+
+/* CLAIM / CAPS: cues drive line reveals (engine). Anchor varies, not centre only. */
+.stage--claim .stage__in { max-width: 46rem; text-align: left; }
+.lines > * { display: block; }
+.lines > * + * { margin-top: 0.1em; }
+
+.caps { display: flex; flex-direction: column; gap: 0.06em; text-align: left; max-width: 60rem; }
+.caps .cap-row { color: var(--sc-ink); }
+.caps .cap-row .n { color: var(--sc-ink-soft); font-family: var(--sc-font-mono); font-size: 0.34em;
+  letter-spacing: 0.2em; vertical-align: super; margin-right: 0.6ch; }
+
+/* PEAK: the promise, wiped in across the letterforms, at the biggest scale.
+   A static ghost sits under the revealed copy so the stage is never empty during
+   the entry slide (ground-or-greet, devices.md). */
+.stage--peak .stage__in { max-width: 90rem; }
+/* the promise is a sentence, so it is sized to fill the frame as ~3 lines and
+   fit, not at single-word scale. It still holds the most scroll room on the
+   page (largest span + dwell), which is what makes it the peak. */
+.promise-wrap { display: grid; line-height: 0.92;
+  font-size: clamp(2.6rem, 10.5vw, 8.5rem); max-width: 15ch; margin-inline: auto; }
+.promise-wrap > * { grid-area: 1 / 1; }
+.promise { color: var(--sc-ink); line-height: 0.9; letter-spacing: -0.045em; text-wrap: balance; }
+.promise.ghost { color: color-mix(in oklab, var(--sc-ink) 12%, transparent); }
+.promise .accent { color: var(--accent); }
+/* reveal wrapper gets clip-path from the engine; give descenders room */
+.wipe { display: inline-block; padding-bottom: 0.12em; margin-bottom: -0.12em; will-change: clip-path; }
+
+/* PROOF: quiet, small, factual. flow + in. */
+.proof { padding-block: var(--sc-section); }
+.proof__lede { max-width: 44rem; }
+.proof__lede h2 { font-size: clamp(1.8rem, 5vw, 3.4rem); line-height: 1.02; letter-spacing: -0.02em; }
+.proof__lede p { color: var(--sc-ink-soft); margin-top: var(--sc-4); max-width: 56ch; }
+.facts { margin-top: var(--sc-8); display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; border-block: 1px solid var(--sc-hairline); }
+.fact { padding: var(--sc-5) var(--sc-5) var(--sc-5) 0; }
+.fact + .fact { border-left: 1px solid var(--sc-hairline); padding-left: var(--sc-5); }
+.fact__n { display: block; font-family: var(--sc-font-display); font-weight: 520; font-size: var(--sc-t-2xl);
+  line-height: 1; letter-spacing: -0.02em; color: var(--sc-ink); font-variant-numeric: tabular-nums; }
+.fact__l { display: block; margin-top: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); text-wrap: pretty; }
+@media (max-width: 800px) { .facts { grid-template-columns: repeat(2, 1fr); }
+  .fact:nth-child(3) { border-left: 0; padding-left: 0; }
+  .fact:nth-child(n+3) { border-top: 1px solid var(--sc-hairline); } }
+@media (max-width: 440px) { .facts { grid-template-columns: 1fr; }
+  .fact + .fact { border-left: 0; padding-left: 0; border-top: 1px solid var(--sc-hairline); } }
+
+/* CLOSE: the inversion — smallest type on the site, one underlined way in. */
+.stage--close .stage__in { max-width: 60rem; text-align: left; }
+.close-mark { font-family: var(--sc-font-display); font-weight: 600; font-size: var(--sc-t-lg);
+  letter-spacing: -0.01em; color: var(--sc-ink); }
+.close-line { font-size: clamp(1.8rem, 5vw, 3.6rem); line-height: 1.05; letter-spacing: -0.02em;
+  color: var(--sc-ink); margin: var(--sc-6) 0; max-width: 20ch; }
+.close-contact { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; color: var(--sc-ink-soft);
+  font-family: var(--sc-font-mono); font-size: var(--sc-t-sm); letter-spacing: 0.02em; margin-top: var(--sc-7); }
+.close-contact a { color: var(--sc-ink-soft); text-decoration: none; }
+.close-contact a:hover { color: var(--sc-ink); }
+.close-foot { position: absolute; inset: auto 0 0 0; padding: var(--sc-5) var(--sc-gutter);
+  display: flex; flex-wrap: wrap; gap: var(--sc-3) var(--sc-6); justify-content: space-between;
+  color: var(--sc-ink-soft); font-size: var(--sc-t-sm); border-top: 1px solid var(--sc-hairline); }
+.close-foot a { color: var(--sc-ink-soft); text-decoration: none; }
+.close-foot a:hover { color: var(--sc-ink); }
+
+/* ======================================================= project drawer ==== */
+.scrim-blackout { position: fixed; inset: 0; z-index: calc(var(--sc-z-chrome) + 9);
+  background: color-mix(in oklab, #000 62%, transparent); opacity: 0; visibility: hidden;
+  transition: opacity var(--sc-d-base) var(--sc-ease-out), visibility var(--sc-d-base); }
+.scrim-blackout.is-open { opacity: 1; visibility: visible; }
+.drawer { position: fixed; inset: 0 0 0 auto; z-index: calc(var(--sc-z-chrome) + 10);
+  width: min(30rem, 100vw); background: var(--sc-canvas); border-left: 1px solid var(--sc-hairline);
+  box-shadow: -30px 0 80px -20px #000; display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform var(--sc-d-slow) var(--sc-ease-drawer); }
+.drawer.is-open { transform: none; }
+.drawer__head { display: flex; align-items: center; justify-content: space-between;
+  padding: var(--sc-5) var(--sc-5) var(--sc-4); border-bottom: 1px solid var(--sc-hairline); }
+.drawer__head h2 { font-size: var(--sc-t-xl); }
+.drawer__body { flex: 1; overflow-y: auto; padding: var(--sc-5); display: flex; flex-direction: column; gap: var(--sc-4); }
+.drawer__body > p { color: var(--sc-ink-soft); margin: 0; }
+.field { display: flex; flex-direction: column; gap: var(--sc-2); }
+.field label { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--sc-ink-soft); }
+.field input, .field textarea, .field select {
+  width: 100%; padding: 0.7em 0.8em; border-radius: var(--sc-r-sm);
+  border: 1px solid var(--sc-hairline-strong); background: var(--sc-surface); color: var(--sc-ink); }
+.field textarea { resize: vertical; min-height: 5rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip { font: inherit; font-size: var(--sc-t-sm); cursor: pointer; padding: 0.4em 0.8em;
+  border-radius: var(--sc-r-pill); border: 1px solid var(--sc-hairline-strong);
+  background: transparent; color: var(--sc-ink-soft);
+  transition: border-color var(--sc-d-fast), color var(--sc-d-fast), background var(--sc-d-fast); }
+.chip[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.drawer__foot { padding: var(--sc-5); border-top: 1px solid var(--sc-hairline); display: flex; flex-direction: column; gap: var(--sc-3); }
+.btn-solid { appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 600;
+  padding: 0.8em 1.2em; border-radius: var(--sc-r-sm); background: var(--accent-deep); color: #fff;
+  box-shadow: var(--sc-e1); transition: transform var(--sc-d-fast) var(--sc-ease-out), background var(--sc-d-base); }
+.btn-solid:hover { transform: translateY(-1px); background: color-mix(in oklab, var(--accent-deep) 82%, var(--accent-bright)); }
+.btn-solid:active { transform: translateY(1px); }
+.icon-btn { background: none; border: 0; cursor: pointer; color: var(--sc-ink); width: 2.4rem; height: 2.4rem;
+  display: grid; place-items: center; border-radius: var(--sc-r-sm); }
+.icon-btn:hover { background: color-mix(in oklab, var(--sc-ink) 10%, transparent); }
+.icon-btn svg { width: 1.3rem; height: 1.3rem; }
+.cap { color: var(--sc-ink-soft); font-size: var(--sc-t-sm); }
+
+/* reduced motion: still the poster, just no undulation/scale/wipe travel */
+@media (prefers-reduced-motion: reduce) {
+  .stage--hero .stage__in { transform: none; }
+  .liquid .lq { transform: none !important; }
+}
