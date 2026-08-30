@@ -1,54 +1,45 @@
 /* ============================================================================
    Liqteq (Liquid Technologies) — theme + page.
-   Built on the scrollcraft taste floor. Typographic-poster grammar: type IS the
-   imagery, scale contrast does the work. Dark, deep-violet world.
-
-   Signature move: the hero word is a variable font (Space Grotesk `wght`) whose
-   glyphs flow toward the pointer and undulate with scroll — the type behaves
-   like a liquid. All in app.js; the engine is untouched.
+   Dark navy world taken straight from the animated logo (ground #080d16,
+   electric-azure glow #1958a7 → #3e96d2 → #6cc1ef). Typographic-manifesto bones
+   with the animated logo as the hero and, as the signature move, the real
+   shipped apps that assemble into a rack as you scroll.
    ========================================================================== */
 
 :root {
-  /* --- brand accent (deep violet). Swap --accent-h/s or these hexes when the
-         real logo colours arrive; everything derives from them. ------------- */
-  --accent:        #a78bfa;         /* electric violet, for type + links */
-  --accent-bright: #c4b5fd;
-  --accent-deep:   #6d4bd0;         /* fills that carry white/near-white text */
-  --accent-ink:    #0a0710;
+  /* --- brand accent (azure, from the logo) ------------------------------- */
+  --accent:        #4aa8e6;    /* type + links */
+  --accent-bright: #6cc1ef;
+  --accent-deep:   #1a63ad;    /* fills that carry white text (clears 4.5:1) */
+  --accent-ink:    #05101c;
 
-  /* --- colour roles (dark violet) --------------------------------------- */
-  --sc-canvas:  #0b0910;            /* near-black, violet-tinted. Drift moves it. */
-  --sc-surface: #171226;
-  --sc-ink:     #efeaf7;            /* near-white, cool */
-  --sc-ink-soft:#a99fc0;            /* tinted violet-grey, ~5:1 on the ground */
+  /* --- colour roles (dark navy) ------------------------------------------ */
+  --sc-canvas:  #080d16;       /* matches the logo ground so the GIF blends */
+  --sc-surface: #121a2b;
+  --sc-ink:     #e9eff8;
+  --sc-ink-soft:#9db0c9;       /* cool blue-grey, ~7:1 on the ground */
   --sc-accent:     var(--accent);
   --sc-accent-ink: var(--accent-ink);
 
-  --sc-hairline: color-mix(in oklab, var(--sc-ink) 15%, transparent);
-  --sc-hairline-strong: color-mix(in oklab, var(--sc-ink) 30%, transparent);
+  --sc-hairline: color-mix(in oklab, var(--sc-ink) 14%, transparent);
+  --sc-hairline-strong: color-mix(in oklab, var(--sc-ink) 28%, transparent);
 
-  /* type: a variable grotesque for the poster voice + a clean text face. */
   --sc-font-display: "Space Grotesk", "Archivo", system-ui, sans-serif;
   --sc-font-text:    "Instrument Sans", system-ui, -apple-system, sans-serif;
   --sc-font-mono:    "Space Grotesk", ui-monospace, monospace;
 
-  --sc-shadow-color: 265 60% 3%;
-
-  --sc-r-sm: 5px; --sc-r-md: 12px; --sc-r-lg: 18px;
+  --sc-shadow-color: 215 70% 2%;
+  --sc-r-sm: 5px; --sc-r-md: 12px; --sc-r-lg: 20px;
   color-scheme: dark;
 }
 
 body { font-weight: 430; }
-/* grain reads as sensor noise on the dark ground; a touch stronger than default */
 .sc-grain { opacity: 0.05; }
-
-/* focus ring stays the bright accent — high contrast on the dark ground */
 :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
 ::selection { background: var(--accent); color: var(--accent-ink); }
-
 h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
 
-/* the one CTA idiom in this grammar: a plain underlined link, not a button */
+/* the one CTA idiom: a plain underlined link */
 .cta {
   display: inline-flex; align-items: center; gap: 0.5ch;
   font: inherit; font-weight: 560; letter-spacing: 0.01em; color: var(--sc-ink);
@@ -62,26 +53,20 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
 .cta:hover svg { transform: translateX(3px); }
 .cta--lg { font-size: var(--sc-t-lg); }
 
-.link-quiet {
-  color: var(--sc-ink-soft); text-decoration: underline;
+.link-quiet { color: var(--sc-ink-soft); text-decoration: underline;
   text-decoration-color: var(--sc-hairline-strong); text-underline-offset: 0.24em;
-  transition: color var(--sc-d-base) var(--sc-ease-out), text-decoration-color var(--sc-d-base) var(--sc-ease-out);
-}
+  transition: color var(--sc-d-base), text-decoration-color var(--sc-d-base); }
 .link-quiet:hover { color: var(--sc-ink); text-decoration-color: var(--accent); }
 
 /* ===================================================== fixed chrome ======= */
-/* Minimal: the wordmark at small scale + one way in. In a poster the wordmark
-   also appears at composition scale in the hero; this is just persistent reach. */
 .bar {
   position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
   display: flex; align-items: center; justify-content: space-between;
-  padding: clamp(0.8rem, 1.8vw, 1.3rem) var(--sc-gutter);
-  color: var(--sc-ink);   /* every drift stop is dark, so light chrome stays legible */
+  padding: clamp(0.8rem, 1.8vw, 1.3rem) var(--sc-gutter); color: var(--sc-ink);
 }
 .bar__mark { display: inline-flex; align-items: center; gap: 0.6ch; text-decoration: none; color: #fff; }
 .bar__mark .glyph { width: 1.5em; height: 1.5em; flex: none; }
 .bar__mark .wd { font-family: var(--sc-font-display); font-weight: 600; font-size: var(--sc-t-lg); letter-spacing: -0.01em; }
-.bar__mark .wd b { color: inherit; font-weight: 600; }
 .bar .cta { color: #fff; text-decoration-color: #fff; }
 
 /* ============================================================ poster ======= */
@@ -92,58 +77,84 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
 }
 .stage__in { width: 100%; max-width: 78rem; margin-inline: auto; }
 
-/* the display scale ramp for a poster — bigger than the taste cap, on purpose,
-   because this whole page is one hero moment. Tracking tightens hard at size. */
-.t-giant  { font-size: clamp(3.6rem, 20vw, 19rem); line-height: 0.92; letter-spacing: -0.045em; }
-.t-huge   { font-size: clamp(3rem, 13vw, 12rem);  line-height: 0.94; letter-spacing: -0.04em; }
-.t-big    { font-size: clamp(2.2rem, 8vw, 6.5rem); line-height: 0.98; letter-spacing: -0.03em; }
-.t-mid    { font-size: clamp(1.6rem, 4.5vw, 3.4rem); line-height: 1.04; letter-spacing: -0.02em; }
+.t-huge { font-size: clamp(3rem, 13vw, 12rem);  line-height: 0.94; letter-spacing: -0.04em; }
+.t-big  { font-size: clamp(2.2rem, 8vw, 6.5rem); line-height: 0.98; letter-spacing: -0.03em; }
+.t-mid  { font-size: clamp(1.6rem, 4.5vw, 3.4rem); line-height: 1.04; letter-spacing: -0.02em; }
 .ink-soft { color: var(--sc-ink-soft); }
 .accent   { color: var(--accent); }
 
-/* HERO ----------------------------------------------------------------------*/
-.stage--hero .kicker {
-  font-family: var(--sc-font-mono); font-size: var(--sc-t-sm); letter-spacing: 0.34em;
-  text-transform: uppercase; color: var(--sc-ink-soft); margin-bottom: clamp(1rem, 3vh, 2.4rem);
-}
-/* the liquid word. Per-glyph spans get their `wght` set from app.js. */
-.liquid { display: inline-block; font-family: var(--sc-font-display); font-weight: 500;
-  font-size: clamp(3.4rem, 21vw, 21rem); line-height: 0.9; letter-spacing: -0.05em;
-  color: var(--sc-ink); }
-.liquid .lq { display: inline-block; will-change: font-variation-settings, transform;
-  font-variation-settings: "wght" 500; }
-.hero-sub { margin-top: clamp(1rem, 3vh, 2.2rem); }
-.hero-sub h1 { font-weight: 500; color: var(--sc-ink); }
-/* subtle scroll-scale so the hero settles as the reader arrives */
-.stage--hero .stage__in { transform: scale(calc(0.985 + var(--sc-p, 0) * 0.03)); transform-origin: 50% 46%; }
+/* HERO: the animated logo, then the wordmark + thesis ---------------------- */
+.stage--hero .stage__in { display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2vh, 1.4rem); }
+.hero-logo { width: clamp(15rem, 42vw, 30rem); aspect-ratio: 1 / 1; display: grid; place-items: center; }
+/* screen blend drops the logo's own dark ground so the glow melts into ours */
+.hero-logo img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; }
+.wordmark { font-size: clamp(1.9rem, 6vw, 4.4rem); font-weight: 600; letter-spacing: -0.02em; color: var(--sc-ink); line-height: 1; }
+.kicker { font-family: var(--sc-font-mono); font-size: var(--sc-t-sm); letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--sc-ink-soft); }
+.hero-thesis { max-width: 34ch; }
+@media (max-width: 640px) { .hero-logo { width: min(72vw, 20rem); } }
 
-/* CLAIM / CAPS: cues drive line reveals (engine). Anchor varies, not centre only. */
+/* CLAIM / CAPS ------------------------------------------------------------- */
 .stage--claim .stage__in { max-width: 46rem; text-align: left; }
-.lines > * { display: block; }
-.lines > * + * { margin-top: 0.1em; }
-
 .caps { display: flex; flex-direction: column; gap: 0.06em; text-align: left; max-width: 60rem; }
-.caps .cap-row { color: var(--sc-ink); }
-.caps .cap-row .n { color: var(--sc-ink-soft); font-family: var(--sc-font-mono); font-size: 0.34em;
-  letter-spacing: 0.2em; vertical-align: super; margin-right: 0.6ch; }
-
-/* PEAK: the promise, wiped in across the letterforms, at the biggest scale.
-   A static ghost sits under the revealed copy so the stage is never empty during
-   the entry slide (ground-or-greet, devices.md). */
-.stage--peak .stage__in { max-width: 90rem; }
-/* the promise is a sentence, so it is sized to fill the frame as ~3 lines and
-   fit, not at single-word scale. It still holds the most scroll room on the
-   page (largest span + dwell), which is what makes it the peak. */
-.promise-wrap { display: grid; line-height: 0.92;
-  font-size: clamp(2.6rem, 10.5vw, 8.5rem); max-width: 15ch; margin-inline: auto; }
-.promise-wrap > * { grid-area: 1 / 1; }
-.promise { color: var(--sc-ink); line-height: 0.9; letter-spacing: -0.045em; text-wrap: balance; }
-.promise.ghost { color: color-mix(in oklab, var(--sc-ink) 12%, transparent); }
-.promise .accent { color: var(--accent); }
-/* reveal wrapper gets clip-path from the engine; give descenders room */
+.cap-row { color: var(--sc-ink); }
 .wipe { display: inline-block; padding-bottom: 0.12em; margin-bottom: -0.12em; will-change: clip-path; }
 
-/* PROOF: quiet, small, factual. flow + in. */
+/* WORK (peak + signature): the shipped apps assemble into a rack on scroll. */
+.stage--work .stage__in { max-width: 88rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.8rem, 2.4vh, 1.8rem); }
+.work-head { text-align: center; }
+.work-head .lead { font-size: clamp(1.5rem, 4.4vw, 3rem); line-height: 1.02; letter-spacing: -0.03em; color: var(--sc-ink); max-width: 20ch; margin-inline: auto; }
+.work-head .lead .accent { color: var(--accent); }
+.work-head .sub { margin-top: var(--sc-3); color: var(--sc-ink-soft); font-family: var(--sc-font-mono);
+  font-size: var(--sc-t-xs); letter-spacing: 0.2em; text-transform: uppercase; }
+
+.rack { position: relative; width: 100%; height: clamp(16rem, 38vh, 24rem);
+  display: flex; align-items: center; justify-content: center; }
+.phone {
+  --t: clamp(0, calc(var(--sc-p, 1) * 1.7), 1);            /* eased arrival by p~0.6 */
+  position: absolute; width: clamp(7.5rem, 11.5vw, 10.5rem); aspect-ratio: 1 / 2.02;
+  border-radius: 1.4rem; padding: 0.5rem;
+  background: linear-gradient(160deg, #223247, #0c1422);
+  border: 1px solid color-mix(in oklab, var(--sc-ink) 18%, transparent);
+  box-shadow: 0 24px 60px -18px #000, inset 0 1px 0 color-mix(in oklab, #fff 12%, transparent);
+  opacity: clamp(0, calc((var(--sc-p, 1) - var(--i) * 0.06) * 6), 1);
+  transform:
+    translateX(calc((var(--i) - 1.5) * var(--t) * 12.2rem))
+    translateY(calc((1 - var(--t)) * 13vh))
+    rotate(calc((var(--i) - 1.5) * var(--t) * 4.2deg))
+    scale(calc(0.82 + var(--t) * 0.18));
+  will-change: transform, opacity;
+}
+.phone:nth-child(1), .phone:nth-child(4) { z-index: 1; }
+.phone:nth-child(2), .phone:nth-child(3) { z-index: 2; }
+.phone__screen { height: 100%; border-radius: 1rem; overflow: clip; position: relative;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 0.3rem; padding: 0.9rem;
+  background:
+    radial-gradient(120% 80% at 50% 12%, color-mix(in oklab, var(--accent) 42%, transparent), transparent 60%),
+    linear-gradient(180deg, #0e1a2c, #0a1220);
+}
+/* a real screenshot can be dropped in as <img class="shot"> and it will cover */
+.phone__screen .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.phone__name { position: relative; font-family: var(--sc-font-display); font-weight: 600; font-size: 1.05rem; color: #fff; }
+.phone__tag { position: relative; font-family: var(--sc-font-mono); font-size: 0.62rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent-bright); }
+.phone__line { position: relative; font-size: 0.72rem; line-height: 1.35; color: color-mix(in oklab, var(--sc-ink) 82%, transparent); }
+.phone .dot { position: absolute; top: 0.7rem; left: 50%; translate: -50% 0; width: 2.6rem; height: 0.28rem;
+  border-radius: 999px; background: color-mix(in oklab, var(--sc-ink) 22%, transparent); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* no fan: lay the apps out as a static, gettable row/grid */
+  .rack { height: auto; flex-wrap: wrap; gap: 1rem; }
+  .phone { position: relative; transform: none !important; opacity: 1 !important;
+    width: clamp(8rem, 40vw, 12rem); }
+}
+@media (max-width: 640px) {
+  .rack { height: auto; flex-wrap: wrap; gap: 0.8rem; }
+  .phone { position: relative; transform: none; opacity: 1;
+    width: clamp(7.5rem, 42vw, 10rem); }
+}
+
+/* PROOF ------------------------------------------------------------------- */
 .proof { padding-block: var(--sc-section); }
 .proof__lede { max-width: 44rem; }
 .proof__lede h2 { font-size: clamp(1.8rem, 5vw, 3.4rem); line-height: 1.02; letter-spacing: -0.02em; }
@@ -161,12 +172,10 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
 @media (max-width: 440px) { .facts { grid-template-columns: 1fr; }
   .fact + .fact { border-left: 0; padding-left: 0; border-top: 1px solid var(--sc-hairline); } }
 
-/* CLOSE: the inversion — smallest type on the site, one underlined way in. */
+/* CLOSE ------------------------------------------------------------------- */
 .stage--close .stage__in { max-width: 60rem; text-align: left; }
-.close-mark { font-family: var(--sc-font-display); font-weight: 600; font-size: var(--sc-t-lg);
-  letter-spacing: -0.01em; color: var(--sc-ink); }
-.close-line { font-size: clamp(1.8rem, 5vw, 3.6rem); line-height: 1.05; letter-spacing: -0.02em;
-  color: var(--sc-ink); margin: var(--sc-6) 0; max-width: 20ch; }
+.close-mark { font-family: var(--sc-font-display); font-weight: 600; font-size: var(--sc-t-lg); letter-spacing: -0.01em; color: var(--sc-ink); }
+.close-line { font-size: clamp(1.8rem, 5vw, 3.6rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--sc-ink); margin: var(--sc-6) 0; max-width: 20ch; }
 .close-contact { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; color: var(--sc-ink-soft);
   font-family: var(--sc-font-mono); font-size: var(--sc-t-sm); letter-spacing: 0.02em; margin-top: var(--sc-7); }
 .close-contact a { color: var(--sc-ink-soft); text-decoration: none; }
@@ -179,7 +188,7 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
 
 /* ======================================================= project drawer ==== */
 .scrim-blackout { position: fixed; inset: 0; z-index: calc(var(--sc-z-chrome) + 9);
-  background: color-mix(in oklab, #000 62%, transparent); opacity: 0; visibility: hidden;
+  background: color-mix(in oklab, #000 64%, transparent); opacity: 0; visibility: hidden;
   transition: opacity var(--sc-d-base) var(--sc-ease-out), visibility var(--sc-d-base); }
 .scrim-blackout.is-open { opacity: 1; visibility: visible; }
 .drawer { position: fixed; inset: 0 0 0 auto; z-index: calc(var(--sc-z-chrome) + 10);
@@ -193,32 +202,23 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
 .drawer__body { flex: 1; overflow-y: auto; padding: var(--sc-5); display: flex; flex-direction: column; gap: var(--sc-4); }
 .drawer__body > p { color: var(--sc-ink-soft); margin: 0; }
 .field { display: flex; flex-direction: column; gap: var(--sc-2); }
-.field label { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--sc-ink-soft); }
-.field input, .field textarea, .field select {
-  width: 100%; padding: 0.7em 0.8em; border-radius: var(--sc-r-sm);
+.field label { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--sc-ink-soft); }
+.field input, .field textarea { width: 100%; padding: 0.7em 0.8em; border-radius: var(--sc-r-sm);
   border: 1px solid var(--sc-hairline-strong); background: var(--sc-surface); color: var(--sc-ink); }
 .field textarea { resize: vertical; min-height: 5rem; }
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.chip { font: inherit; font-size: var(--sc-t-sm); cursor: pointer; padding: 0.4em 0.8em;
-  border-radius: var(--sc-r-pill); border: 1px solid var(--sc-hairline-strong);
-  background: transparent; color: var(--sc-ink-soft);
+.chip { font: inherit; font-size: var(--sc-t-sm); cursor: pointer; padding: 0.4em 0.8em; border-radius: var(--sc-r-pill);
+  border: 1px solid var(--sc-hairline-strong); background: transparent; color: var(--sc-ink-soft);
   transition: border-color var(--sc-d-fast), color var(--sc-d-fast), background var(--sc-d-fast); }
 .chip[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
 .drawer__foot { padding: var(--sc-5); border-top: 1px solid var(--sc-hairline); display: flex; flex-direction: column; gap: var(--sc-3); }
-.btn-solid { appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 600;
-  padding: 0.8em 1.2em; border-radius: var(--sc-r-sm); background: var(--accent-deep); color: #fff;
-  box-shadow: var(--sc-e1); transition: transform var(--sc-d-fast) var(--sc-ease-out), background var(--sc-d-base); }
-.btn-solid:hover { transform: translateY(-1px); background: color-mix(in oklab, var(--accent-deep) 82%, var(--accent-bright)); }
+.btn-solid { appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 600; padding: 0.8em 1.2em;
+  border-radius: var(--sc-r-sm); background: var(--accent-deep); color: #fff; box-shadow: var(--sc-e1);
+  transition: transform var(--sc-d-fast) var(--sc-ease-out), background var(--sc-d-base); }
+.btn-solid:hover { transform: translateY(-1px); background: color-mix(in oklab, var(--accent-deep) 80%, var(--accent-bright)); }
 .btn-solid:active { transform: translateY(1px); }
 .icon-btn { background: none; border: 0; cursor: pointer; color: var(--sc-ink); width: 2.4rem; height: 2.4rem;
   display: grid; place-items: center; border-radius: var(--sc-r-sm); }
 .icon-btn:hover { background: color-mix(in oklab, var(--sc-ink) 10%, transparent); }
 .icon-btn svg { width: 1.3rem; height: 1.3rem; }
 .cap { color: var(--sc-ink-soft); font-size: var(--sc-t-sm); }
-
-/* reduced motion: still the poster, just no undulation/scale/wipe travel */
-@media (prefers-reduced-motion: reduce) {
-  .stage--hero .stage__in { transform: none; }
-  .liquid .lq { transform: none !important; }
-}

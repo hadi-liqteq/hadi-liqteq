@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Liqteq: AI-native software, built to ship</title>
-<meta name="description" content="Liquid Technologies (Liqteq) is an AI-native software house in Houston, TX. We design, build and deploy custom AI, software and data: platforms, ML pipelines and enterprise solutions for energy, healthcare and beyond.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%230b0910'/><path d='M12 4C12 4 6.5 10.5 6.5 14.5a5.5 5.5 0 0 0 11 0C17.5 10.5 12 4 12 4Z' fill='%23a78bfa'/></svg>">
+<meta name="description" content="Liquid Technologies (Liqteq) is an AI-native software house in Houston, TX. We design, build and deploy custom AI, software and data: platforms, ML pipelines and shipped apps like Vitalog, Vidan, Preview ID and Roam Trips.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23080d16'/><circle cx='12' cy='12' r='7' fill='none' stroke='%234aa8e6' stroke-width='2.4'/><circle cx='12' cy='12' r='2' fill='%236cc1ef'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,38 +20,39 @@
 <!-- ============================================================ chrome ====== -->
 <header class="bar">
   <a class="bar__mark" href="#top" aria-label="Liqteq, home">
-    <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4C12 4 6.5 10.5 6.5 14.5a5.5 5.5 0 0 0 11 0C17.5 10.5 12 4 12 4Z" fill="var(--accent)"/></svg>
-    <span class="wd"><b>Liqteq</b></span>
+    <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7.5" fill="none" stroke="var(--accent)" stroke-width="2.2"/><circle cx="12" cy="12" r="2" fill="var(--accent-bright)"/></svg>
+    <span class="wd">Liqteq</span>
   </a>
   <button class="cta" type="button" data-proj-open>Start a project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </header>
 
 <main id="top">
 
-  <!-- 1 · ARREST — pin. The name at extreme scale, liquid under the pointer. -->
-  <section data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#0b0910">
+  <!-- 1 · ARREST — pin. The animated logo, then the wordmark + thesis. -->
+  <section data-sc-act="pin" data-sc-span="2.2" data-sc-drift="#080d16">
     <div data-sc-stage class="stage stage--hero">
       <div class="stage__in">
         <p class="kicker" data-sc-cue="0 0.9 0">Liquid Technologies · Houston, TX</p>
-        <h1 class="hero-h1" data-sc-cue="0 0.92 0" data-sc-rise="0">
-          <span class="liquid" data-liquid>Liquid</span>
-        </h1>
-        <p class="hero-thesis t-mid ink-soft" data-sc-cue="0.08 0.92 0.2" style="margin-top:1.2rem">AI-native software, data and platforms, built to ship.</p>
+        <div class="hero-logo" data-sc-cue="0 0.95 0" data-sc-rise="0">
+          <img src="assets/logo.gif" width="600" height="600" alt="Liquid Technologies animated logo" loading="eager" decoding="async">
+        </div>
+        <h1 class="wordmark" data-sc-cue="0 0.92 0">Liquid Technologies</h1>
+        <p class="hero-thesis t-mid ink-soft" data-sc-cue="0.08 0.92 0.2">AI-native software, data and platforms, built to ship.</p>
       </div>
     </div>
   </section>
 
-  <!-- 2 · CONFIDENCE — pin. The claim, assembling line by line. Anchored left. -->
-  <section data-sc-act="pin" data-sc-span="2.6" data-sc-drift="#100b1c">
+  <!-- 2 · CONFIDENCE — pin. The claim, assembling line by line. -->
+  <section data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#0a1120">
     <div data-sc-stage class="stage stage--claim">
       <div class="stage__in">
-        <h2 class="t-big lines" data-sc-cue="0.04 0.9" data-sc-kinetic="lines">We design, build and deploy custom AI, software and data for the enterprise.</h2>
+        <h2 class="t-big" data-sc-cue="0.04 0.9" data-sc-kinetic="lines">We design, build and deploy custom AI, software and data for the enterprise.</h2>
       </div>
     </div>
   </section>
 
   <!-- 3 · BREADTH — pin. The capabilities arrive, each a wipe. -->
-  <section data-sc-act="pin" data-sc-span="3.0" data-sc-drift="#140f22">
+  <section data-sc-act="pin" data-sc-span="2.8" data-sc-drift="#0c1626">
     <div data-sc-stage class="stage stage--caps" style="place-items:center start;text-align:left">
       <div class="stage__in">
         <div class="caps">
@@ -65,37 +66,67 @@
     </div>
   </section>
 
-  <!-- 4 · CONVICTION (peak) — pin. The promise, biggest scale, wiped into being.
-       A static ghost grounds the stage so the entry slide is never empty. -->
-  <section data-sc-act="pin" data-sc-span="3.4" data-sc-dwell="0.34" data-sc-drift="#0f0a1a">
-    <div data-sc-stage class="stage stage--peak">
+  <!-- 4 · CONVICTION (peak + signature) — pin. The shipped apps assemble into a
+       rack as you scroll. The head greets so the entry is never empty. -->
+  <section data-sc-act="pin" data-sc-span="3.6" data-sc-dwell="0.3" data-sc-drift="#0a1322">
+    <div data-sc-stage class="stage stage--work">
       <div class="stage__in">
-        <div class="promise-wrap">
-          <span class="promise ghost" aria-hidden="true">From real problems to production.</span>
-          <span class="promise live"><span class="wipe" data-sc-reveal="up" data-sc-reveal-at="0.06 0.5">From real problems to <span class="accent">production.</span></span></span>
+        <div class="work-head" data-sc-cue="0 0.9 0 0.25">
+          <p class="lead">From real problems to <span class="accent">production.</span></p>
+          <p class="sub">Selected work</p>
+        </div>
+        <div class="rack" aria-label="Apps we have shipped">
+          <article class="phone" style="--i:0">
+            <div class="phone__screen"><span class="dot" aria-hidden="true"></span>
+              <span class="phone__tag">Healthcare</span>
+              <span class="phone__name">Vitalog</span>
+              <span class="phone__line">Health records, scheduling, medication tracking and secure messaging with care providers.</span>
+            </div>
+          </article>
+          <article class="phone" style="--i:1">
+            <div class="phone__screen"><span class="dot" aria-hidden="true"></span>
+              <span class="phone__tag">AI · Computer vision</span>
+              <span class="phone__name">Vidan</span>
+              <span class="phone__line">Real-time video analytics that detects and classifies unsecured hopper caps. Built with TGS.</span>
+            </div>
+          </article>
+          <article class="phone" style="--i:2">
+            <div class="phone__screen"><span class="dot" aria-hidden="true"></span>
+              <span class="phone__tag">Security</span>
+              <span class="phone__name">Preview ID</span>
+              <span class="phone__line">Facial-recognition login that adds a layer of security to the apps you already use.</span>
+            </div>
+          </article>
+          <article class="phone" style="--i:3">
+            <div class="phone__screen"><span class="dot" aria-hidden="true"></span>
+              <span class="phone__tag">Travel</span>
+              <span class="phone__name">Roam Trips</span>
+              <span class="phone__line">Plan the trip and keep it moving, across iOS and Android from one codebase.</span>
+            </div>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 5 · TRUST — flow. The proof drops to quiet. Real facts, one real count. -->
-  <section class="sc-section proof" data-sc-act="flow" data-sc-drift="#0b0910" style="padding-block-start:var(--sc-7)">
+  <section class="sc-section proof" data-sc-act="flow" data-sc-drift="#080d16" style="padding-block-start:var(--sc-7)">
     <div class="sc-wrap">
       <div class="proof__lede" data-sc-in data-sc-stagger="70">
         <h2 class="t-mid">Built out of Houston, since 2018.</h2>
-        <p>Human-centered design, data-driven delivery. We build custom platforms, ML pipelines and enterprise software for teams in energy, healthcare and beyond, from first prototype to production.</p>
+        <p>Human-centered design, data-driven delivery. We build custom platforms, ML pipelines and enterprise software for teams in energy, healthcare and beyond, from first prototype to production, on Flutter, React Native and the cloud.</p>
       </div>
       <div class="facts" data-sc-in data-sc-stagger="60" aria-label="Liqteq at a glance">
         <div class="fact"><span class="fact__n">Est. <span data-sc-count="0 2018" data-sc-count-at="0.05 0.6">0</span></span><span class="fact__l">Houston, Texas</span></div>
         <div class="fact"><span class="fact__n">AI-native</span><span class="fact__l">we design, build and deploy custom AI</span></div>
         <div class="fact"><span class="fact__n">Energy · Health</span><span class="fact__l">and beyond, enterprise-grade</span></div>
-        <div class="fact"><span class="fact__n">iOS · Web · Cloud</span><span class="fact__l">Android, cross-platform, cloud-native</span></div>
+        <div class="fact"><span class="fact__n">iOS · Web · Cloud</span><span class="fact__l">Android and cross-platform, cloud-native</span></div>
       </div>
     </div>
   </section>
 
   <!-- 6 · READINESS — pin. The inversion: smallest type, one underlined way in. -->
-  <section id="close" data-sc-act="pin" data-sc-span="1.25" data-sc-drift="#0a0710">
+  <section id="close" data-sc-act="pin" data-sc-span="1.25" data-sc-drift="#070b13">
     <div data-sc-stage class="stage stage--close" style="place-items:center start">
       <div class="stage__in">
         <p class="close-mark" data-sc-cue="0 1 0 0">Liqteq</p>

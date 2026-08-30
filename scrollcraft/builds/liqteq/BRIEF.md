@@ -93,16 +93,27 @@ Why the other seven lost:
 - **Rhythmic cutlist** — the energy is confident and scale-driven, not a pulse of
   hard cuts.
 
+## Update after the client sent the animated logo
+
+The client provided their real **animated logo** (a blue phoenix in a swirl) and
+asked to keep its colour scheme and to bring the apps they have shipped into play
+on scroll. Two changes followed:
+
+- **World recoloured to the logo:** dark navy ground (`#080d16`, matched to the
+  logo so the GIF blends via `mix-blend-mode: screen`) with electric-azure accents
+  (`#1958a7 → #3e96d2 → #6cc1ef`), replacing the earlier violet.
+- **Hero is now the animated logo** plus the wordmark and thesis, and the
+  signature move changed from liquid type to the app rack below.
+
 ## Signature move
 
-`liquidType` — the hero display is a variable font (Space Grotesk `wght`) split
-into glyphs; bespoke JS sets each glyph's `font-variation-settings` from (a) the
-pointer's distance to that glyph on desktop and (b) the act's `--sc-p` plus a slow
-undulation everywhere, so the word thickens and flows like a fluid, toward the
-cursor where there is one and with the scroll where there is not. Gated to
-`(hover: hover)` for the pointer half; the scroll/undulation half runs on touch
-and is stilled under reduced motion. The engine is untouched; this is page JS
-reading pointer + `--sc-p`. Not Coarts's colour dimmer, and not a kit parameter.
+`appRack` — the real shipped apps (Vitalog, Vidan, Preview ID, Roam Trips) are
+device frames that **assemble into a fanned rack as you scroll**: pure CSS driven
+off the peak act's `--sc-p` (each phone's translate/rotate/scale/opacity keyed to
+progress and a per-device `--i` stagger), so travelling through the act brings the
+portfolio in one piece at a time. Under reduced motion and on phones the rack
+lays out as a static, fully gettable row. The engine is untouched. Not Coarts's
+colour dimmer, and not a kit device — a bespoke scroll-driven assembly.
 
 ## Fingerprint gate
 
