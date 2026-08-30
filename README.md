@@ -1,80 +1,67 @@
-# Coarts Lighting — website
+# Websites ecosystem
 
-A premium, scroll-driven storefront for **Coarts Lighting**, Pakistan's lighting
-house. Built with the [scrollcraft](https://github.com/nateherkai/scroll-craft)
-skill: scroll is the timeline, and the whole page is lit — the world is rendered
-from real luminance (glows, filaments, light pools, fixture silhouettes) in
-CSS/SVG rather than from stock photography, which suits a brand whose product
-*is* light.
+Multiple scroll-driven websites built and deployed together from one repository,
+using the [scrollcraft](https://github.com/nateherkai/scroll-craft) design system.
 
-It is a static site. No build step, no framework, no backend.
-
-**Single-file build / live preview.** `python3 build-artifact.py` inlines the CSS
-and JS into one portable file at `dist/coarts-artifact.html` (host it anywhere).
-A hosted preview of that file lives at
-https://claude.ai/code/artifact/60c24529-87e5-4eaf-8d17-13a4b67c43c3
-
-## Run it
-
-```bash
-# any static server from the repo root, e.g.
-python3 -m http.server 4500
-# then open http://localhost:4500
+```
+sites/            one self-contained site per folder
+  coarts/         Coarts Lighting Solutions (lighting e-commerce)
+    index.html    the page
+    app.css       brand theme + page classes
+    app.js        page behaviour (signature move, drawers, engine mount)
+    scrollcraft.css / scrollcraft.js   the engine (copied per site, never edited)
+  liqteq/         Liquid Technologies (in progress)
+scrollcraft/      the scrollcraft workspace (shared across every build)
+  FINGERPRINTS.md   uniqueness registry — one row per site, so no two repeat
+  builds/<site>/BRIEF.md   the design brief for each site
+build.py          builds every sites/* into docs/ + a hub page
+docs/             generated output that GitHub Pages serves (do not hand-edit)
 ```
 
-## Files
+Each site is **self-contained** (its own copy of the engine and theme), which
+matches scrollcraft's model — the engine is a copied mechanism, themed with
+tokens, never modified. Adding a site is just a new `sites/<name>/` folder.
 
-| File | What it is |
-|---|---|
-| `index.html` | The page. Six acts of semantic HTML marked up with `data-sc-*`. |
-| `app.css` | The brand: colour tokens + every page class, on the scrollcraft taste floor. |
-| `app.js` | The dimmer (signature move), the enquiry drawer, mobile nav, engine mount. |
-| `scrollcraft.css` / `scrollcraft.js` | The scrollcraft engine, unmodified. Do not edit; theme with tokens. |
-| `scrollcraft/builds/coarts/BRIEF.md` | The design brief: feeling curve, peak, grammar, score table. |
-| `scrollcraft/FINGERPRINTS.md` | The uniqueness registry (one row per build). |
+## Build
 
-## The idea
+```bash
+python3 build.py     # copies every sites/* into docs/<name>/ and writes docs/index.html (the hub)
+```
 
-- **Grammar: gallery / catalog.** The visitor's question is "what are the
-  options", so the page is a walkable collection with museum-style spec labels
-  (fact, not pitch), a pan rail as the spine, and an index of rooms for nav.
-- **Signature move: the dimmer.** A colour-temperature + brightness control,
-  fixed in the corner, re-lights the *entire* page at once. Warmth is an oklab
-  mix between an amber and a cool-blue anchor (so it passes through neutral
-  white, never green); brightness dims the cream ground toward a warm taupe
-  without ever leaving the light family, so dark ink keeps its contrast across
-  the whole range. The visitor's setting is remembered in `localStorage`.
-- **Browse + enquire, not a cart.** Pricing is quote-based, so there are no
-  prices and no invented numbers anywhere. "Enquire" adds a piece to a slide-out
-  enquiry list; the form composes a message. The only numerals on the page are
-  real Kelvin values (2700K/4000K/6500K), which are physics, not brand claims.
+## Run a site locally
 
-## Two things to set before launch
+```bash
+python3 -m http.server 8000 --directory sites/coarts   # then open http://localhost:8000
+# or serve the whole built ecosystem:
+python3 -m http.server 8000 --directory docs           # hub at /, sites at /coarts/, /liqteq/ …
+```
 
-1. **Contact routing.** `app.js` → `CONTACT` at the top. Set `whatsapp` to the
-   real WhatsApp number (digits only, with country code) and/or `email` to the
-   real inbox. Until then the enquiry form composes a draft to a placeholder on
-   the Coarts domain.
-2. **Real catalogue.** Product names (Halo 42, Meridian Disc, …) and the
-   category copy are tasteful placeholders for the redesign. Swap in the real
-   range; the museum-label schema (`type · finish · Kelvin`) is the template to
-   fill.
+## Deploy (GitHub Pages)
 
-## Fonts
+Pages is set to **Deploy from a branch → `main` → `/docs`**. After `python3 build.py`,
+commit and push `main`; Pages redeploys automatically.
 
-Display is **Fraunces**, text is **Instrument Sans**, loaded from Google Fonts
-with full fallback stacks (`Georgia` for display, `system-ui` for text) so the
-page degrades cleanly if the font CDN is unreachable.
+- Hub:   `https://hadi-liqteq.github.io/hadi-liqteq/`
+- Coarts: `https://hadi-liqteq.github.io/hadi-liqteq/coarts/`
+- Liqteq: `https://hadi-liqteq.github.io/hadi-liqteq/liqteq/`
 
-## Verification
+(First-time only: an admin enables Pages in **Settings → Pages**, source
+*Deploy from a branch*, branch `main`, folder `/docs`.)
 
-Verified with the scrollcraft harness (headless Chromium walking every act at
-six scroll positions) at desktop, mobile (390×844) and reduced-motion:
-**no dead scroll, all cues reach full opacity, all text clears 4.5:1 contrast at
-its worst frame.** The pan rail was measured for real overflow at four widths.
-Screenshots and `report.json` are written to `lab/` (git-ignored).
+## Verify a site
 
-Accessibility: keyboard-operable dimmer (native range inputs), focus-visible on
-everything (high-contrast, not the shifting accent), a focus-trapped enquiry
-dialog, and a reduced-motion path that keeps every reveal as a fade and turns
-the rail into a native scroll region.
+Each site is checked with the scrollcraft harness (headless Chromium walking
+every act at several scroll positions) for dead scroll, cue opacity and contrast,
+at desktop, mobile and reduced-motion. Screenshots land in `lab/` (git-ignored).
+
+## Sites
+
+### Coarts Lighting — `sites/coarts/`
+Gallery/catalog grammar; a colour-temperature + brightness dimmer re-lights the
+whole page (the signature move). Real brand, catalogue and specs from the Coarts
+LED catalogue. Contact: UAN +92 21 111 509 509, info@coartslighting.com, and the
+real socials. Set `CONTACT.whatsapp` in `sites/coarts/app.js` to route enquiries
+to WhatsApp instead of email.
+
+### Liqteq — `sites/liqteq/`
+Redesign of liqteq.com for Liquid Technologies. In progress.
