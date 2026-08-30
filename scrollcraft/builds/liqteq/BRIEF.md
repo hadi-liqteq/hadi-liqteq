@@ -105,15 +105,19 @@ on scroll. Two changes followed:
 - **Hero is now the animated logo** plus the wordmark and thesis, and the
   signature move changed from liquid type to the app rack below.
 
-## Signature move
+## Signature move (revised again on client feedback: "iPhone screens, one app
+per scroll")
 
-`appRack` — the real shipped apps (Vitalog, Vidan, Preview ID, Roam Trips) are
-device frames that **assemble into a fanned rack as you scroll**: pure CSS driven
-off the peak act's `--sc-p` (each phone's translate/rotate/scale/opacity keyed to
-progress and a per-device `--i` stagger), so travelling through the act brings the
-portfolio in one piece at a time. Under reduced motion and on phones the rack
-lays out as a static, fully gettable row. The engine is untouched. Not Coarts's
-colour dimmer, and not a kit device — a bespoke scroll-driven assembly.
+`appScenes` — each real shipped app (Vitalog, Vidan, Preview ID, Roam Trips) gets
+its **own scroll scene**: an Apple-style iPhone (dynamic island, status bar, app
+header) whose screen **scrubs the app flow** as you travel the act — the inner
+screen is translated from the act's `--sc-p`, so scrolling the section scrolls the
+app. Copy (tag, name, description, features) cues in beside it; the layout
+alternates side to side down the page. Placeholder screens are branded stand-ins;
+a real screenshot drops in by adding `has-shot` to the `.iphone` and an
+`<img class="shot">`, which then pans the full screenshot with scroll. Pure CSS
+off `--sc-p` plus engine cues; the engine is untouched. Distinct from Coarts's
+dimmer and from a kit device.
 
 ## Fingerprint gate
 
