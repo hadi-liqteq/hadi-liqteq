@@ -164,11 +164,16 @@ h1, h2, h3 { font-family: var(--sc-font-display); font-weight: 520; margin: 0; }
   font-family: var(--sc-font-mono); font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--accent-bright); background: color-mix(in oklab, var(--accent) 16%, transparent); }
 
-/* real screenshot path: <div class="iphone has-shot">…<img class="shot" src>… */
+/* real screenshot path: add class "has-shot" to .iphone and an
+   <img class="shot" src="…"> inside .app-body. The shot overlays the placeholder
+   and pans top-to-bottom with scroll; if it fails to load (e.g. blocked in the
+   preview), app.js drops has-shot and the branded placeholder shows instead. */
+.shot { display: none; }
 .iphone.has-shot .app-topbar, .iphone.has-shot .app-header { display: none; }
 .iphone.has-shot .app-body { inset: 0; }
 .iphone.has-shot .app-body__inner { height: 100%; padding: 0; transform: none; }
-.iphone.has-shot .shot { width: 100%; height: 100%; object-fit: cover;
+.iphone.has-shot .shot { display: block; position: absolute; inset: 0; z-index: 3;
+  width: 100%; height: 100%; object-fit: cover; background: #0a0f18;
   object-position: 50% calc(var(--sc-p, 0) * 100%); }
 
 @media (prefers-reduced-motion: reduce) {

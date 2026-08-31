@@ -75,5 +75,18 @@
   var y = document.querySelector('[data-year]');
   if (y) y.textContent = String(new Date().getFullYear());
 
+  // Real screenshots (.shot) are optional: if one can't load (offline preview,
+  // blocked origin, broken URL), fall back to the branded placeholder screen
+  // that's already underneath it rather than showing a broken image.
+  function dropShot(img) {
+    var iphone = img.closest('.iphone');
+    if (iphone) iphone.classList.remove('has-shot');
+    img.remove();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.iphone.has-shot .shot'), function (img) {
+    if (img.complete && img.naturalWidth === 0) return dropShot(img);
+    img.addEventListener('error', function () { dropShot(img); });
+  });
+
   if (window.ScrollCraft && ScrollCraft.mount) ScrollCraft.mount(document.body);
 })();
